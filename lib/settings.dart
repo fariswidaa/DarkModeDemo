@@ -4,27 +4,44 @@ import 'package:DarkModeDemo/theme_changer.dart';
 
 //bool checkValue = true;
 
+enum SingingCharacter { darkMode, lightMode }
+
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
+
   ThemeChanger themeChangeProvider = new ThemeChanger();
 
   int _radioValue = -1;
 
+  SingingCharacter _character = SingingCharacter.darkMode;
+
   void initState() {
-    //getCurrentAppTheme();
+    getCurrentAppTheme();
     super.initState();
     print('init state from settings.dart');
-    //setCheckValueSetter();
   }
-
-  void getCurrentAppTheme() async {
+  
+///
+/// This method will access the preference and 
+/// return the result of the preference 
+/// 
+  getCurrentAppTheme() async {
+    // create a var to store the pref
+    final themePref = await themeChangeProvider.themeModePreferences.getTheme() ;
+    if (themePref){
+      _character = SingingCharacter.darkMode ;
+      // print the values for debugging purposes 
+      print (_character);
+    } else {
+      _character = SingingCharacter.lightMode ;
+      print (_character);
+    }
+    // get access to the preference through themeChangeProvider
     print(await themeChangeProvider.themeModePreferences.getTheme());
-    themeChangeProvider.darkThemeSetter(
-        await themeChangeProvider.themeModePreferences.getTheme());
   }
 
   @override
@@ -106,21 +123,28 @@ class _SettingsState extends State<Settings> {
             title: Text('Pick a theme'),
             content: SingleChildScrollView(
               child: ListBody(
-
                 children: <Widget>[
-                  RadioListTile(
-                    value: 0,
-                    groupValue: _radioValue,
-                    onChanged: (value) {
-                      _handleRadioValueChange(value);
+                  RadioListTile<SingingCharacter>(
+                    value: SingingCharacter.darkMode,
+                    groupValue: _character,
+                    onChanged: ( SingingCharacter value) {
+                      setState((){
+                          _character = value;
+                          print(_character);
+                      });
+                     // _handleRadioValueChange(value);
                     },
                     title: Text('Dark Mode'),
                   ),
-                  RadioListTile(
-                    value: 1,
-                    groupValue: _radioValue,
-                    onChanged: (value) {
-                      _handleRadioValueChange(value);
+                  RadioListTile<SingingCharacter>(
+                    value: SingingCharacter.lightMode,
+                    groupValue: _character,
+                    onChanged: ( SingingCharacter value) {
+                      setState((){
+                          _character = value;
+                          print(_character);
+                      });
+                     // _handleRadioValueChange(value);
                     },
                     title: Text('Light Mode'),
                   ),
@@ -135,7 +159,8 @@ class _SettingsState extends State<Settings> {
               FlatButton(
                 child: Text('OK'),
                 // create a method 
-                onPressed: () => checkRadioButtonToSavePref(),
+                onPressed: () => 
+                checkRadioButtonToSavePref(),
               ),
             ],
           );
@@ -150,20 +175,22 @@ class _SettingsState extends State<Settings> {
   /// The returning value is void 
   
  checkRadioButtonToSavePref () {
-    switch (_radioValue){
-      case 0 :
+    switch (_character){
+      case SingingCharacter.darkMode :
       // save the dark mode 
       themeChangeProvider.darkThemeSetter(true);
       Navigator.of(context).pop();
+      print (_radioValue);
       break ;
-      case 1 : 
+      case SingingCharacter.lightMode : 
       // save the light mode 
       themeChangeProvider.darkThemeSetter(false);
       Navigator.of(context).pop();
+      print (_radioValue);
       break ;
       default :
       // save the light mode 
-      themeChangeProvider.darkThemeSetter(false);
+      throw Exception() ;
       break ;
     }
     
