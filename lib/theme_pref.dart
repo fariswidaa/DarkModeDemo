@@ -12,6 +12,6 @@ class ThemeModePreferences {
   Future<bool> getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     print('getting the value of theme pref ${prefs.getBool(THEME_STATUS)}');
-    return prefs.getBool(THEME_STATUS)  ;
+    return prefs.getBool(THEME_STATUS)?? false  ;
   }
 }

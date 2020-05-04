@@ -21,25 +21,6 @@ class _SettingsState extends State<Settings> {
     super.initState();
     print('init state from settings.dart');
   }
-  
-  ///
-  /// This method will access the preference and
-  /// return the result of the preference
-  ///
-  getCurrentAppTheme() async {
-    // create a var to store the pref
-    final themePref = await themeChangeProvider.themeModePreferences.getTheme();
-    if (themePref) {
-      _character = SingingCharacter.darkMode;
-      // print the values for debugging purposes
-      print(_character);
-    } else {
-      _character = SingingCharacter.lightMode;
-      print(_character);
-    }
-    // get access to the preference through themeChangeProvider
-    print(await themeChangeProvider.themeModePreferences.getTheme());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +43,25 @@ class _SettingsState extends State<Settings> {
   }
 }
 
+  
+  ///
+  /// This method will access the preference and
+  /// return the result of the preference
+  ///
+  getCurrentAppTheme() async {
+    // create a var to store the pref
+    final themePref = await themeChangeProvider.themeModePreferences.getTheme();
+    if (themePref) {
+      _character = SingingCharacter.darkMode;
+      // print the values for debugging purposes
+      print(_character);
+    } else {
+      _character = SingingCharacter.lightMode;
+      print(_character);
+    }
+    // get access to the preference through themeChangeProvider
+    print(await themeChangeProvider.themeModePreferences.getTheme());
+  }
 
   /// Create a method that will check the value,
   /// of the Radio buttons
@@ -133,7 +133,10 @@ class _DarkModeDialogState extends State<DarkModeDialog> {
       actions: <Widget>[
         FlatButton(
           child: Text('Cancel'),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed:() {
+            Navigator.of(context).pop();
+            getCurrentAppTheme();
+          } 
         ),
         FlatButton(
           child: Text('OK'),
