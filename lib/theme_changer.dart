@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:DarkModeDemo/theme_pref.dart';
 
 class ThemeChanger extends ChangeNotifier {

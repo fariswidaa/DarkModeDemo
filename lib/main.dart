@@ -5,22 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:DarkModeDemo/settings.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+// TODOs
+
+
+// 4 = changes in the settings.dart file
+// 5 = next
+ThemeChanger themeChangeProvider = ThemeChanger();
+
+void main() => runApp(
+      ChangeNotifierProvider(
+        builder: (context) => ThemeChanger(),
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -33,41 +40,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  ThemeChanger themeChangeProvider = ThemeChanger();
+  void getCurrentAppTheme() async {
+    print(await themeChangeProvider.themeModePreferences.getTheme());
+    themeChangeProvider.darkThemeSetter(
+        await themeChangeProvider.themeModePreferences.getTheme());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ThemeChanger>(
+      builder: (context, counter, child) =>
+       MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeModeDark.themeData(counter.darkTheme, context),
+        home: Home(),
+      ),
+    );
+  }
 
   void initState() {
     super.initState();
     getCurrentAppTheme();
     print('init state');
-  }
-
-   void getCurrentAppTheme() async {
-    print(await themeChangeProvider.themeModePreferences.getTheme());
-    themeChangeProvider.darkThemeSetter(
-        await themeChangeProvider.themeModePreferences.getTheme());
-  } 
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeChanger>(
-          builder: (_) {
-            return themeChangeProvider;
-          },
-        ),
-      ],
-      child: Consumer<ThemeChanger>(
-        builder: (BuildContext context, value, Widget child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme:
-                ThemeModeDark.themeData(themeChangeProvider.darkTheme, context),
-            home: Home(),
-          );
-        },
-      ),
-    );
   }
 }
 
@@ -77,9 +71,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _counter = 0;
-  
+
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -103,8 +96,6 @@ class _HomeState extends State<Home> {
             },
           ),
         ],
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Dark Mode'),
       ),
       body: Center(
@@ -129,3 +120,23 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+/* 
+    return ChangeNotifierProvider<ThemeChanger>(
+      builder: (_) {
+        return themeChangeProvider;
+      },
+      child: Consumer<ThemeChanger>(
+        // the first change is to use the themeChangeProvider variable
+        // instead of value
+        builder: (BuildContext context, themeChangeProvider, Widget child) {
+          print('value from consumer is ${themeChangeProvider.darkTheme}');
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme:
+                ThemeModeDark.themeData(themeChangeProvider.darkTheme, context),
+            home: Home(),
+          );
+        },
+      ),
+    ); */

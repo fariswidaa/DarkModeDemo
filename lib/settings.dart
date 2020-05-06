@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:DarkModeDemo/theme_changer.dart';
+import 'package:provider/provider.dart';
 
 
 enum SingingCharacter { darkMode, lightMode }
@@ -67,18 +68,20 @@ class _SettingsState extends State<Settings> {
   /// of the Radio buttons
   /// and save the theme preference on theme_pref
   /// The returning value is void
-
   checkRadioButtonToSavePref(BuildContext context) {
     switch (_character) {
       case SingingCharacter.darkMode:
         // save the dark mode
-        themeChangeProvider.darkThemeSetter(true);
+        // exp.1 try the following 
+        Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(true);
+       // themeChangeProvider.darkThemeSetter(true);
         Navigator.of(context).pop();
         print(_character);
         break;
       case SingingCharacter.lightMode:
         // save the light mode
-        themeChangeProvider.darkThemeSetter(false);
+        Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(false);
+        // themeChangeProvider.darkThemeSetter(false);
         Navigator.of(context).pop();
         print(_character);
         break;
@@ -136,6 +139,7 @@ class _DarkModeDialogState extends State<DarkModeDialog> {
           onPressed:() {
             Navigator.of(context).pop();
             getCurrentAppTheme();
+         
           } 
         ),
         FlatButton(
