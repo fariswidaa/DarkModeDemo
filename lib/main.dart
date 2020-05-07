@@ -42,8 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getCurrentAppTheme() async {
     print(await themeChangeProvider.themeModePreferences.getTheme());
-    themeChangeProvider.darkThemeSetter(
-        await themeChangeProvider.themeModePreferences.getTheme());
+   /* themeChangeProvider.darkThemeSetter(
+      await themeChangeProvider.themeModePreferences.getTheme()
+        );
+   */
+    Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(
+      await themeChangeProvider.themeModePreferences.getTheme()
+      );
   }
 
   @override

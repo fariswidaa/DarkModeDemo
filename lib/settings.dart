@@ -72,19 +72,18 @@ class _SettingsState extends State<Settings> {
     switch (_character) {
       case SingingCharacter.darkMode:
         // save the dark mode
-        // exp.1 try the following 
         Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(true);
-       // themeChangeProvider.darkThemeSetter(true);
         Navigator.of(context).pop();
         print(_character);
         break;
+
       case SingingCharacter.lightMode:
         // save the light mode
         Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(false);
-        // themeChangeProvider.darkThemeSetter(false);
         Navigator.of(context).pop();
         print(_character);
         break;
+
       default:
         // save the light mode
         throw Exception();
@@ -126,7 +125,6 @@ class _DarkModeDialogState extends State<DarkModeDialog> {
                   _character = value;
                   print(_character);
                 });
-                // _handleRadioValueChange(value);
               },
               title: Text('Light Mode'),
             ),
@@ -144,7 +142,6 @@ class _DarkModeDialogState extends State<DarkModeDialog> {
         ),
         FlatButton(
           child: Text('OK'),
-          // create a method
           onPressed: () => checkRadioButtonToSavePref(context),
         ),
       ],
