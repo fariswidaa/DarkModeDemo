@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:DarkModeDemo/theme_changer.dart';
+
 import 'package:provider/provider.dart';
 
 
@@ -45,10 +46,10 @@ class _SettingsState extends State<Settings> {
 }
 
   
-  ///
-  /// This method will access the preference and
-  /// return the result of the preference
-  ///
+  /*
+   * This method will access the preference and
+   * return the result of the preference
+  */
   getCurrentAppTheme() async {
     // create a var to store the pref
     final themePref = await themeChangeProvider.themeModePreferences.getTheme();
@@ -64,10 +65,13 @@ class _SettingsState extends State<Settings> {
     print(await themeChangeProvider.themeModePreferences.getTheme());
   }
 
-  /// Create a method that will check the value,
-  /// of the Radio buttons
-  /// and save the theme preference on theme_pref
-  /// The returning value is void
+
+  /**
+   * Create a method that will check the value,
+   * of the Radio buttons.
+   * and save the theme preference on theme_pref.
+   * The returning value is void.
+  */
   checkRadioButtonToSavePref(BuildContext context) {
     switch (_character) {
       case SingingCharacter.darkMode:

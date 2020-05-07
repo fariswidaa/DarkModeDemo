@@ -1,15 +1,11 @@
-import 'package:DarkModeDemo/theme.dart';
-import 'package:DarkModeDemo/theme_changer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:DarkModeDemo/settings.dart';
+import 'package:DarkModeDemo/theme.dart';
+import 'package:DarkModeDemo/theme_changer.dart';
+
 import 'package:provider/provider.dart';
 
-// TODOs
-
-
-// 4 = changes in the settings.dart file
-// 5 = next
 ThemeChanger themeChangeProvider = ThemeChanger();
 
 void main() => runApp(
@@ -40,12 +36,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  void getCurrentAppTheme() async {
+ getCurrentAppTheme() async {
     print(await themeChangeProvider.themeModePreferences.getTheme());
-   /* themeChangeProvider.darkThemeSetter(
-      await themeChangeProvider.themeModePreferences.getTheme()
-        );
-   */
     Provider.of<ThemeChanger>(context, listen :false).darkThemeSetter(
       await themeChangeProvider.themeModePreferences.getTheme()
       );
@@ -54,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeChanger>(
-      builder: (context, counter, child) =>
+      builder: (context, dark, child) =>
        MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeModeDark.themeData(counter.darkTheme, context),
+        theme: ThemeModeDark.themeData(dark.darkTheme, context),
         home: Home(),
       ),
     );
@@ -125,23 +117,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-/* 
-    return ChangeNotifierProvider<ThemeChanger>(
-      builder: (_) {
-        return themeChangeProvider;
-      },
-      child: Consumer<ThemeChanger>(
-        // the first change is to use the themeChangeProvider variable
-        // instead of value
-        builder: (BuildContext context, themeChangeProvider, Widget child) {
-          print('value from consumer is ${themeChangeProvider.darkTheme}');
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme:
-                ThemeModeDark.themeData(themeChangeProvider.darkTheme, context),
-            home: Home(),
-          );
-        },
-      ),
-    ); */
